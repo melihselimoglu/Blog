@@ -13,6 +13,7 @@ import com.SpringBoot.blog.domain.entities.Tag;
 import com.SpringBoot.blog.repositories.TagRepository;
 import com.SpringBoot.blog.services.TagService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -64,6 +65,12 @@ private final TagRepository tagRepository;
             tagRepository.deleteById(id);
         }
        });
+    }
+
+    @Override
+    public Tag getTagById(UUID id) {
+        return tagRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Tag not found with id: " + id));
     }
     
 }
