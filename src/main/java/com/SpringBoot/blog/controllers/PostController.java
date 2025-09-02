@@ -34,6 +34,12 @@ public class PostController {
         List<PostDto> postDtos = posts.stream().map(postMapper::toDto).toList();
         return ResponseEntity.ok(postDtos);
     }
+
+    @GetMapping(path = "/drafts")
+    public ResponseEntity<List<PostDto>> getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
     
     
 }
