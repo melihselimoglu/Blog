@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.SpringBoot.blog.domain.dtos.PostDto;
 import com.SpringBoot.blog.domain.entities.Post;
+import com.SpringBoot.blog.domain.entities.User;
 import com.SpringBoot.blog.mappers.PostMapper;
 import com.SpringBoot.blog.services.PostService;
+import com.SpringBoot.blog.services.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +17,7 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -25,6 +28,7 @@ public class PostController {
 
     private final PostService postService;
     private final PostMapper postMapper;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<PostDto>> getAllPosts(
@@ -36,10 +40,11 @@ public class PostController {
     }
 
     @GetMapping(path = "/drafts")
-    public ResponseEntity<List<PostDto>> getMethodName(@RequestParam String param) {
-        return new String();
-    }
-    
-    
-    
+    public ResponseEntity<List<PostDto>> getDrafts(@RequestAttribute UUID userId){ {
+        User loggedInUser = userService.getUserById(userId);
+        List<Post> draftPosts= postService.getDraftPosts(loggedInUser);
+        List<PostDto> postDtos = draftPosts.stream().map(postMapper::toDto).toList();
+        return ResponseEntity.ok(postDtos);
+        }
+    } 
 }
