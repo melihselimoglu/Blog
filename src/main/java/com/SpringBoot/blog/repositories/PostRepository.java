@@ -10,6 +10,7 @@ import com.SpringBoot.blog.domain.PostStatus;
 import com.SpringBoot.blog.domain.entities.Category;
 import com.SpringBoot.blog.domain.entities.Post;
 import com.SpringBoot.blog.domain.entities.Tag;
+import com.SpringBoot.blog.domain.entities.User;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
@@ -17,4 +18,5 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
     List<Post> findAllByStatusAndCategory(PostStatus status, Category category);
     List<Post> findAllByStatusAndTagsContaining(PostStatus status, Tag tag);
     List<Post> findAllByStatus(PostStatus status);
+    List<Post> findAllByAuthorAndStatus(User author, PostStatus status); 
 }
