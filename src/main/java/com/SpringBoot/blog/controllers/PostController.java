@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.SpringBoot.blog.domain.CreatePostRequest;
 import com.SpringBoot.blog.domain.dtos.CreatePostRequestDto;
 import com.SpringBoot.blog.domain.dtos.PostDto;
+import com.SpringBoot.blog.domain.dtos.UpdatePostRequestDto;
 import com.SpringBoot.blog.domain.entities.Post;
 import com.SpringBoot.blog.domain.entities.User;
 import com.SpringBoot.blog.mappers.PostMapper;
 import com.SpringBoot.blog.services.PostService;
 import com.SpringBoot.blog.services.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -58,7 +60,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(
-            @RequestBody CreatePostRequestDto createPostRequestDto,
+            @Valid @RequestBody CreatePostRequestDto createPostRequestDto,
             @RequestAttribute UUID userId) {
          User loggedInUser = userService.getUserById(userId);
         CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(createPostRequestDto);
@@ -69,7 +71,8 @@ public class PostController {
     
     @PutMapping(path = "/{id}")
     public ResponseEntity<PostDto> updatePost(
-        @PathVariable UUID id, @RequestBody String entity) {
+        @PathVariable UUID id, 
+        @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto) {
         //TODO: process PUT request
         
         return null;
