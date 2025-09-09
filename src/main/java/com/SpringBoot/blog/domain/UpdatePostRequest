@@ -1,0 +1,5 @@
+package com.SpringBoot.blog.domain;
+
+public class UpdatePostRequest {
+    
+}
