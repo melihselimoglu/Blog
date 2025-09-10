@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SpringBoot.blog.domain.CreatePostRequest;
+import com.SpringBoot.blog.domain.UpdatePostRequest;
 import com.SpringBoot.blog.domain.dtos.CreatePostRequestDto;
 import com.SpringBoot.blog.domain.dtos.PostDto;
 import com.SpringBoot.blog.domain.dtos.UpdatePostRequestDto;
@@ -73,8 +74,7 @@ public class PostController {
     public ResponseEntity<PostDto> updatePost(
         @PathVariable UUID id, 
         @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto) {
-        //TODO: process PUT request
-        
+        UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDto);  
         return null;
     }
 
