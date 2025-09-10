@@ -3,12 +3,14 @@ package com.SpringBoot.blog.services.impl;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.HashSet;
 
 import org.springframework.stereotype.Service;
 
 import com.SpringBoot.blog.domain.CreatePostRequest;
 import com.SpringBoot.blog.domain.PostStatus;
+import com.SpringBoot.blog.domain.UpdatePostRequest;
 import com.SpringBoot.blog.domain.entities.Category;
 import com.SpringBoot.blog.domain.entities.Post;
 import com.SpringBoot.blog.domain.entities.Tag;
@@ -17,6 +19,9 @@ import com.SpringBoot.blog.repositories.PostRepository;
 import com.SpringBoot.blog.services.CategoryService;
 import com.SpringBoot.blog.services.PostService;
 import com.SpringBoot.blog.services.TagService;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -83,6 +88,31 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(newPost);
     }
     
+    @Override
+    @Transactional
+    public Post updatePost(UUID id, UpdatePostRequest updatePostRequest) {
+        Post existingPost = postRepository.findById(id).orElseThrow(() -> 
+            new EntityNotFoundException("Post with id " + id + " not found"));
+        existingPost.setTitle(updatePostRequest.getTitle());
+        String postContent = updatePostRequest.getContent();
+        existingPost.setContent(updatePostRequest.getContent());
+        existingPost.setStatus(updatePostRequest.getStatus());
+        existingPost.setReadingTime(calculateReadingTime(postContent));
+
+        UUID updatePostRequestCategoryId = updatePostRequest.getCaregoryId();
+        if(!existingPost.getCategory().getId().equals(updatePostRequestCategoryId)) {
+            Category newCategory = categoryService.getCategoryById(updatePostRequestCategoryId);
+            existingPost.setCategory(newCategory);
+        }
+
+        Set<UUID> existingTagIds = existingPost.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
+        Set<UUID> updatePostRequestTagIds = updatePostRequest.getTagIds();
+        if(!existingTagIds.equals(updatePostRequestTagIds)) {
+            List<Tag> newTags = tagService.getTagByIds(updatePostRequestTagIds);
+            existingPost.setTags(new HashSet<>(newTags));
+        }
+        return postRepository.save(existingPost);
+    }
     private Integer calculateReadingTime(String content) {
         if(content == null || content.isEmpty()) {
             return 0;
