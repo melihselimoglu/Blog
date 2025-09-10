@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import com.SpringBoot.blog.domain.CreatePostRequest;
+import com.SpringBoot.blog.domain.UpdatePostRequest;
 import com.SpringBoot.blog.domain.dtos.CreatePostRequestDto;
 import com.SpringBoot.blog.domain.dtos.PostDto;
 import com.SpringBoot.blog.domain.dtos.UpdatePostRequestDto;
@@ -20,5 +21,5 @@ public interface PostMapper {
 
     CreatePostRequest toCreatePostRequest(CreatePostRequestDto dto);
 
-    UpdatePostRequestDto toUpdatePostRequest(UpdatePostRequestDto dto);
+    UpdatePostRequest toUpdatePostRequest(UpdatePostRequestDto dto);
 }
