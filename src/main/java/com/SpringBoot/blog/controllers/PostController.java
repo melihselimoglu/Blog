@@ -75,7 +75,9 @@ public class PostController {
         @PathVariable UUID id, 
         @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto) {
         UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDto);  
-        return null;
+        Post updatedPost = postService.updatePost(id, updatePostRequest);
+        PostDto updatedPostDto = postMapper.toDto(updatedPost);
+        return ResponseEntity.ok(updatedPostDto);
     }
 
 }
