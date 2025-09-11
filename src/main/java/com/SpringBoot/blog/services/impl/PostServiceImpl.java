@@ -121,4 +121,10 @@ public class PostServiceImpl implements PostService {
        return (int) Math.ceil((double) wordCount / WORDS_PER_MINUTE);
     }
 
+    @Override
+    public Post getPost(UUID id) {
+        return postRepository.findById(id).orElseThrow(() -> 
+            new EntityNotFoundException("Post with id " + id + " not found"));
+    }
+
 }
