@@ -9,6 +9,7 @@ import com.SpringBoot.blog.domain.entities.Post;
 import com.SpringBoot.blog.domain.entities.User;
 
 public interface PostService {
+    Post getPost(UUID id);
     List<Post> getAllPosts(UUID categoryId, UUID tagId);
     List<Post> getDraftPosts(User user);
     Post createPost(User user, CreatePostRequest createPostRequest);
